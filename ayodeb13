@@ -1,0 +1,34 @@
+## Es un programa que almacena el resultado de obtener la inversa de una matriz nxn 
+## en la memoria cache y si se solicita encontrar la inversa de una matriz de la cual
+## ya se posee este valor, el programa lo recupera de la memoria y si es una matriz
+## nueva, muestra el valor de la inversa y de nuevo lo almacena en el cache.
+
+## Esta función crea una lista en la cual se almacena la información de la inversa de
+## una matriz nxn, para reducir el tiempo de ejecución del programa cuando se solicita
+## la inversa de una matriz ya hallada.
+makeCacheMatrix <- function(x = matrix()) {
+  i <- NULL
+  set <- function(y) {
+    x <<- y
+    i <<- NULL
+  }
+  get <- function() x
+  setsolve <- function(solve) i <<- solve
+  getsolve <- function() i
+  list(set = set, get = get, setsolve = setsolve, getsolve = getsolve)
+}
+
+## Esta función encuentra el valor de la inversa de una matriz por la función solve()
+## de R y si esta ya fue encontrada, la recupera de la memoria cache.
+cacheSolve <- function(x, ...) {
+  i <- x$getsolve()
+  if(!is.null(i)) {
+    message("Obtención de datos en cache")
+    return(i)
+  }
+  data <- x$get()
+  i <- solve(data, ...)
+  x$setsolve(i)
+  i
+  ## Return a matrix that is the inverse of 'i'
+}
